@@ -1,0 +1,24 @@
+{
+  "name": "branch-merger",
+  "version": "0.0.1",
+  "description": "Action for keeping branches in sync by merging them",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aeosys/branch-merger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aeosys/branch-merger/issues"
+  },
+  "homepage": "https://github.com/aeosys/branch-merger#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.3",
+    "@actions/github": "^2.1.1"
+  }
+}

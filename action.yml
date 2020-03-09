@@ -1,0 +1,12 @@
+name: 'Branch merger'
+description: 'Keep branches in sync by merging them'
+inputs:
+  from-branch:
+    description: 'Watch and merge from this branch'
+    required: true
+  to-branch:
+    description: 'Keep this branch up to date'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
