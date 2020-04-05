@@ -15,16 +15,43 @@ function createPR(baseBranch:string, headBranch:string, title:string, body:strin
     });
 }
 
-function createBranch(name:string) {
+function createBranch(name:string, sha:string) {
     octokit.git.createRef({
         ...context.repo,
         ref: 'ref/heads/' + name,
-        sha: context.sha,
+        sha,
     });
 }
 
+function updateMergeBranch(name:string, sha:string) {
+    octokit.git.updateRef({
+        ...context.repo,
+        ref: 'ref/heads/' + name,
+        sha,
+    });
+}
+
+async function doesBranchExist(name:string):Promise<boolean> {
+    const matchingResults = await octokit.git.listMatchingRefs({
+        ...context.repo,
+        ref: 'heads/' + name
+    });
+
+    return matchingResults.data.length > 0;
+}
+
+async function doesPullRequestExist(headBranchName:string) {
+    const matchingResults = await octokit.pulls.list({
+        ...context.repo,
+        state: 'open',
+        head: headBranchName, // TODO Don't know if we need organization here
+    });
+
+    return matchingResults.data.length > 0;
+}
+
 async function run() {
-    // TODO Get branches
+    // Get config
     const fromBrach = core.getInput('from-branch');
     const toBranch = core.getInput('to-branch');
     const token = core.getInput('github-token');
@@ -38,13 +65,19 @@ async function run() {
 
     // TODO Merge branch if auto merge is on
 
-
     const inConflict = false;
     const headBranch = fromBrach; // TODO Straigth merge?
-    const isExistingPR = false; // TODO
+    const isExistingMergeBranch = await doesBranchExist(branchName);
+    var isExistingPR = false;
 
-    // TODO Create merge branch if conflict or update existing branch
-    createBranch(branchName);
+    // Create merge branch if conflict or update existing branch
+    if (isExistingMergeBranch) {
+        // TODO Update reference with added commits
+        updateMergeBranch(branchName, context.sha);
+        isExistingPR = await doesPullRequestExist(branchName);
+    } else {
+        createBranch(branchName, context.sha);
+    }
 
     // Create PR if no auto merge or conflict
     if (!isExistingPR && (!autoMerge || inConflict)) {
