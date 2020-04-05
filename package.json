@@ -2,16 +2,17 @@
   "name": "branch-merger",
   "version": "0.0.1",
   "description": "Action for keeping branches in sync by merging them",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build -m index.ts"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aeosys/branch-merger.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Antti Nevala",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/aeosys/branch-merger/issues"
@@ -20,5 +21,9 @@
   "dependencies": {
     "@actions/core": "^1.2.3",
     "@actions/github": "^2.1.1"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.0",
+    "typescript": "^3.8.3"
   }
 }
