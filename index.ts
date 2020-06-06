@@ -6,7 +6,7 @@ let octokit:github.GitHub;
 let context:Context;
 
 function createPR(baseBranch:string, headBranch:string, title:string, body:string) {
-    console.log('Creating PR ' + name + ' from branch ' + headBranch);
+    console.log('Creating PR ' + title + ' from branch ' + headBranch);
 
     octokit.pulls.create({
         ...context.repo,
