@@ -64,26 +64,26 @@ async function run() {
     // TODO Validate that changes happened in from brach. Either here or in workflow configuration if possible
     // TODO Use wildcards in validating branch
     // TODO Compare branches
-    const branchName = `merge/${fromBranch}-to-${toBranch}`;
+    const mergeBranchName = `merge/${fromBranch}-to-${toBranch}`;
 
     // TODO Merge branch if auto merge is on
 
     const inConflict = false;
-    const isExistingMergeBranch = await doesBranchExist(branchName);
+    const isExistingMergeBranch = await doesBranchExist(mergeBranchName);
     var isExistingPR = false;
 
     // Create merge branch if conflict or update existing branch
     if (isExistingMergeBranch) {
         // TODO Update reference with added commits
-        updateMergeBranch(branchName, context.sha);
-        isExistingPR = await doesPullRequestExist(branchName);
+        updateMergeBranch(mergeBranchName, context.sha);
+        isExistingPR = await doesPullRequestExist(mergeBranchName);
     } else {
-        createBranch(branchName, context.sha);
+        createBranch(mergeBranchName, context.sha);
     }
 
     // Create PR if no auto merge or conflict
     if (!isExistingPR && (!autoMerge || inConflict)) {
-        createPR(branchName, toBranch, 'TODO Title', 'TODO Body');
+        createPR(toBranch, mergeBranchName, 'TODO Title', 'TODO Body');
     }
 }
 
