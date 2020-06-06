@@ -6,6 +6,8 @@ let octokit:github.GitHub;
 let context:Context;
 
 function createPR(baseBranch:string, headBranch:string, title:string, body:string) {
+    console.log('Creating PR ' + name + ' from branch ' + headBranch);
+
     octokit.pulls.create({
         ...context.repo,
         base: baseBranch,
@@ -16,6 +18,8 @@ function createPR(baseBranch:string, headBranch:string, title:string, body:strin
 }
 
 function createBranch(name:string, sha:string) {
+    console.log('Creating branch ' + name);
+
     octokit.git.createRef({
         ...context.repo,
         ref: 'refs/heads/' + name,
@@ -24,6 +28,8 @@ function createBranch(name:string, sha:string) {
 }
 
 function updateMergeBranch(name:string, sha:string) {
+    console.log('Fast forwaring branch ' + name);
+
     octokit.git.updateRef({
         ...context.repo,
         ref: 'refs/heads/' + name,
@@ -37,6 +43,8 @@ async function doesBranchExist(name:string):Promise<boolean> {
         ref: 'refs/heads/' + name
     });
 
+    console.log(matchingResults, 'Matches for existing branch');
+
     return matchingResults.data.length > 0;
 }
 
@@ -46,6 +54,8 @@ async function doesPullRequestExist(headBranchName:string) {
         state: 'open',
         head: headBranchName, // TODO Don't know if we need organization here
     });
+
+    console.log(matchingResults, 'Matches for existing PR');
 
     return matchingResults.data.length > 0;
 }
