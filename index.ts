@@ -52,7 +52,6 @@ async function doesPullRequestExist(headBranchName:string) {
 
 async function run() {
     // Get config
-    const fromBrach = core.getInput('from-branch');
     const toBranch = core.getInput('to-branch');
     const token = core.getInput('github-token');
     const autoMerge = core.getInput('auto-merge') == 'true' ? true : false;
@@ -60,13 +59,16 @@ async function run() {
     octokit = new github.GitHub(token);
     context = github.context;
 
+    const fromBranch = context.ref;
+
+    // TODO Validate that changes happened in from brach. Either here or in workflow configuration if possible
+    // TODO Use wildcards in validating branch
     // TODO Compare branches
-    const branchName = `merge-from-${fromBrach}-to-${toBranch}`;
+    const branchName = `merge/${fromBranch}-to-${toBranch}`;
 
     // TODO Merge branch if auto merge is on
 
     const inConflict = false;
-    const headBranch = fromBrach; // TODO Straigth merge?
     const isExistingMergeBranch = await doesBranchExist(branchName);
     var isExistingPR = false;
 
