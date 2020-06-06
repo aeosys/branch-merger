@@ -70,7 +70,8 @@ async function run() {
     context = github.context;
 
     // Get name of triggering branch witout refs/heads/
-    const fromBranch = context.ref.slice(10);
+    const fromBranch = context.ref.slice(11);
+    console.log('From branch is ' + fromBranch);
 
     // TODO Validate that changes happened in from brach. Either here or in workflow configuration if possible
     // TODO Use wildcards in validating branch
