@@ -18,7 +18,7 @@ function createPR(baseBranch:string, headBranch:string, title:string, body:strin
 function createBranch(name:string, sha:string) {
     octokit.git.createRef({
         ...context.repo,
-        ref: 'ref/heads/' + name,
+        ref: 'refs/heads/' + name,
         sha,
     });
 }
@@ -26,7 +26,7 @@ function createBranch(name:string, sha:string) {
 function updateMergeBranch(name:string, sha:string) {
     octokit.git.updateRef({
         ...context.repo,
-        ref: 'ref/heads/' + name,
+        ref: 'refs/heads/' + name,
         sha,
     });
 }
@@ -34,7 +34,7 @@ function updateMergeBranch(name:string, sha:string) {
 async function doesBranchExist(name:string):Promise<boolean> {
     const matchingResults = await octokit.git.listMatchingRefs({
         ...context.repo,
-        ref: 'heads/' + name
+        ref: 'refs/heads/' + name
     });
 
     return matchingResults.data.length > 0;
