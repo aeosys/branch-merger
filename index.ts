@@ -10,8 +10,8 @@ function createPR(baseBranch:string, headBranch:string, title:string, body:strin
 
     octokit.pulls.create({
         ...context.repo,
-        base: baseBranch,
-        head: headBranch,
+        base: 'refs/heads/' + baseBranch,
+        head: 'refs/heads/' + headBranch,
         title,
         body,
     });
